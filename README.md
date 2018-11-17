@@ -1,2 +1,4 @@
 # script
-script for parsing text files
+The script should be run like this:
+
+cat input.txt | python script.py > output.txt
