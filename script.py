@@ -48,8 +48,9 @@ def calculate_print_intend(line=None, printf=False):
     if line:
         global_intented_list.append(line)
     if printf:
+        prev_count = 1
         for i in range(0, len(global_intented_list)):
-            print_with_intend(global_intented_list, i)
+            prev_count = print_with_intend(global_intented_list, i, prev_count)
         global_intented_list = []
 
 
@@ -58,7 +59,7 @@ def get_intend_count(line):
     return counter['.']
 
 
-def print_with_intend(intented_list, pos):
+def print_with_intend(intented_list, pos, prev_count):
     """
     :param intented_list: list of text
     :param pos: position to print
@@ -67,6 +68,11 @@ def print_with_intend(intented_list, pos):
     symbol = '-'
     line = intented_list[pos]
     countx = get_intend_count(line)
+    if not countx:
+        countx = prev_count
+        space = ' ' * (countx + 3)
+        sys.stdout.write(space + line)
+        return countx
     space = ' ' * (countx+1)
     next_count = 0
     if pos < len(intented_list)-1:
@@ -92,7 +98,7 @@ def main():
             count.increment_count(line)
             line = line.replace('*', '')
             sys.stdout.write(count.get_count()+line)
-        if line.startswith('.'):
+        elif line != '\n':
             previous_is_intended = True
             calculate_print_intend(line)
 
